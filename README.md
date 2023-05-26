@@ -1,3 +1,5 @@
+[English/[Japanese](README_JP.md)]]
+
 # Ninja Lantern
 
 ![Ninja Lantern](images/ninja-lantern.jpg)
