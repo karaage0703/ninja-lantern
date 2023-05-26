@@ -1,4 +1,4 @@
-[English/[Japanese](README_JP.md)]]
+[English/[Japanese](README_JP.md)]
 
 # Ninja Lantern
 
