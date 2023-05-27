@@ -41,10 +41,10 @@ $ sudo apt-get install scons
 $ cd && git clone https://github.com/jgarff/rpi_ws281x.git
 $ cd rpi_ws281x
 $ sudo scons
-$ sudo pip3 install rpi_ws281x adafruit-circuitpython-neopixel
+$ sudo pip3 install rpi_ws281x
 ```
 
-4. Clone or download this repository.
+3. Clone or download this repository.
 
 ```bash
 $ git clone https://github.com/username/ninja-lantern.git
@@ -56,7 +56,17 @@ $ git clone https://github.com/username/ninja-lantern.git
 $ cd ninja-lantern
 ```
 
-5. Run the script to start the Ninja Lantern.
+5. Download and copy 'NARUTO-HandSignDetection'
+
+```bash
+$ cd && git clone https://github.com/Kazuhito00/NARUTO-HandSignDetection
+$ cd ~/ninja-lantern
+$ cp -r ~/NARUTO-HandSignDetection/model ./
+$ cp -r ~/NARUTO-HandSignDetection/utils ./
+$ cp -r ~/NARUTO-HandSignDetection/setting ./
+```
+
+6. Run the script to start the Ninja Lantern.
 
 ```bash
 $ python3 main.py
