@@ -47,6 +47,7 @@ def display_color_pattern(strip, seal, count):
         "seal15": {"colors": [(255, 255, 0), (0, 255, 255)], "effect": "gradient", "speed": 0.5},
         "seal16": {"colors": [(127, 0, 255), (0, 127, 255)], "effect": "blink", "speed": 1},
         "seal17": {"colors": [(255, 0, 127), (127, 0, 255)], "effect": "gradient", "speed": 1},
+        "seal18": {"colors": [(255, 0, 0), (0, 0, 0)], "effect": "slide"},
     }
 
     if seal in seal_effects:
@@ -56,16 +57,30 @@ def display_color_pattern(strip, seal, count):
 
         if effect == "static":
             for i in range(LED_COUNT):
-                strip.setPixelColor(i, Color(color_pattern[i % len(color_pattern)][1],
-                                             color_pattern[i % len(color_pattern)][0],
+                strip.setPixelColor(i, Color(color_pattern[i % len(color_pattern)][0],
+                                             color_pattern[i % len(color_pattern)][1],
                                              color_pattern[i % len(color_pattern)][2]))
             strip.show()
+        elif effect == "slide":
+            tmp_count = count % LED_COUNT
+            for i in range(LED_COUNT):
+                if i == tmp_count:
+                    strip.setPixelColor(i, Color(color_pattern[0][0],
+                                                 color_pattern[0][1],
+                                                 color_pattern[0][2]))
+                else:
+                    strip.setPixelColor(i, Color(color_pattern[1][0],
+                                                 color_pattern[1][1],
+                                                 color_pattern[1][2]))
+
+            strip.show()
+ 
         elif effect == "blink":
             tmp_count = count % 4
             if tmp_count == 0 or tmp_count == 1:
                 for i in range(LED_COUNT):
-                    strip.setPixelColor(i, Color(color_pattern[i % len(color_pattern)][1],
-                                                 color_pattern[i % len(color_pattern)][0],
+                    strip.setPixelColor(i, Color(color_pattern[i % len(color_pattern)][0],
+                                                 color_pattern[i % len(color_pattern)][1],
                                                  color_pattern[i % len(color_pattern)][2]))
                 strip.show()
             if tmp_count == 2 or tmp_count == 3:
@@ -75,8 +90,8 @@ def display_color_pattern(strip, seal, count):
         elif effect == "gradient":
             for i in range(LED_COUNT):
                 index = (i + round(time.time() * 3)) % len(color_pattern)
-                strip.setPixelColor(i, Color(color_pattern[index][1],
-                                             color_pattern[index][0],
+                strip.setPixelColor(i, Color(color_pattern[index][0],
+                                             color_pattern[index][1],
                                              color_pattern[index][2]))
             strip.show()
     else:
@@ -266,7 +281,7 @@ def main():
         fps_result = cvFpsCalc.get()
 
         led_count += 1
-        if led_count > 100:
+        if led_count > 10000:
             led_count = 0
 
         # 検出実施 #############################################################
@@ -343,11 +358,10 @@ def main():
         cv.imshow(window_name, debug_image)
         # cv.moveWindow(window_name, 100, 100)
        
-        print('color_pattern')
-        print(color_pattern)
 
         if color_pattern == 0:
-            clear_color(strip)
+            # clear_color(strip)
+            display_color_pattern(strip, 'seal18', led_count)
         if color_pattern == 1:
             display_color_pattern(strip, 'seal1', led_count)
         if color_pattern == 2:
