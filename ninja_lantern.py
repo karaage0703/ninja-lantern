@@ -47,7 +47,7 @@ def display_color_pattern(strip, seal, count):
         "seal15": {"colors": [(255, 255, 0), (0, 255, 255)], "effect": "gradient", "speed": 0.5},
         "seal16": {"colors": [(127, 0, 255), (0, 127, 255)], "effect": "blink", "speed": 1},
         "seal17": {"colors": [(255, 0, 127), (127, 0, 255)], "effect": "gradient", "speed": 1},
-        "seal18": {"colors": [(255, 0, 0), (0, 0, 0)], "effect": "slide"},
+        "seal18": {"colors": [(255, 255, 255), (0, 0, 0)], "effect": "slide"},
     }
 
     if seal in seal_effects:
