@@ -400,7 +400,6 @@ def main():
         # FPS調整 #############################################################
         elapsed_time = time.time() - start_time
         sleep_time = max(0, ((1.0 / fps) - elapsed_time))
-        print(sleep_time)
         time.sleep(sleep_time)
 
     cap.release()
