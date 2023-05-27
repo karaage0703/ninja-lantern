@@ -47,7 +47,7 @@ $ sudo pip3 install rpi_ws281x
 3. Clone or download this repository.
 
 ```bash
-$ git clone https://github.com/username/ninja-lantern.git
+$ git clone https://github.com/karaage0703/ninja-lantern.git
 ```
 
 4. Move into the `ninja-lantern` directory.
@@ -69,7 +69,7 @@ $ cp -r ~/NARUTO-HandSignDetection/setting ./
 6. Run the script to start the Ninja Lantern.
 
 ```bash
-$ python3 main.py
+$ sudo python3 ninja_lantern.py
 ```
 
 ## Usage
