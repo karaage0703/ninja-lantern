@@ -4,11 +4,7 @@
 
 ![Ninja Lantern](images/ninja-lantern.png)
 
-
-
-https://github.com/karaage0703/ninja-lantern/assets/5562157/ebc74155-08dd-462c-a988-8635ab547a34
-
-
+https://github.com/karaage0703/ninja-lantern/assets/5562157/0f9bfaca-e2e7-49ec-abc8-1d2eb3cc0807
 
 The Ninja Lantern is an interactive Turkish lamp that changes colors in response to hand seals, just like those used by ninjas. It uses Python and machine learning to recognize the seals and adjust the lamp's color accordingly.
 
