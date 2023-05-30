@@ -58,7 +58,7 @@ $ git clone https://github.com/karaage0703/ninja-lantern.git
 $ cd ninja-lantern
 ```
 
-5. Download and copy 'NARUTO-HandSignDetection'
+5. Download and copy AI model and utility files of `NARUTO-HandSignDetection` 
 
 ```bash
 $ cd && git clone https://github.com/Kazuhito00/NARUTO-HandSignDetection
@@ -69,6 +69,14 @@ $ cp -r ~/NARUTO-HandSignDetection/setting ./
 ```
 
 6. Run the script to start the Ninja Lantern.
+
+Single process version
+
+```bash
+$ sudo python3 ninja_lantern.py
+```
+
+Multi process version
 
 ```bash
 $ sudo python3 ninja_lantern.py
