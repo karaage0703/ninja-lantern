@@ -2,7 +2,9 @@
 
 # Ninja Lantern
 
-![Ninja Lantern](images/ninja-lantern.jpg)
+![Ninja Lantern](images/ninja-lantern.png)
+
+https://github.com/karaage0703/ninja-lantern/assets/5562157/0f9bfaca-e2e7-49ec-abc8-1d2eb3cc0807
 
 The Ninja Lantern is an interactive Turkish lamp that changes colors in response to hand seals, just like those used by ninjas. It uses Python and machine learning to recognize the seals and adjust the lamp's color accordingly.
 
@@ -74,7 +76,7 @@ $ sudo python3 ninja_lantern.py
 
 ## Usage
 
-Simply bring your hand seal in front of the camera and enjoy as the lamp changes color accordingly. The mapping between seals and colors can be customized in the `config.py` file.
+Simply bring your hand seal in front of the camera and enjoy as the lamp changes color accordingly.
 
 ## Contributions
 
@@ -83,3 +85,13 @@ Feedback and pull requests are always welcome.
 ## License
 
 [MIT License](LICENSE)
+
+## Special Thanks
+
+- [Kazuhito00](https://github.com/Kazuhito00)
+- [PINTO0309](https://github.com/PINTO0309)
+
+# References
+
+- [Kazuhito00/NARUTO-HandSignDetection](https://github.com/Kazuhito00/NARUTO-HandSignDetection)
+- [rpi-ws281x/rpi-ws281x-python](https://github.com/rpi-ws281x/rpi-ws281x-python)
