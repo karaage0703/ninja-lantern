@@ -301,7 +301,7 @@ def main(seal_type):
     jutsu_start_time = 0  # 術名表示の開始時間初期化
     frame_count = 0  # フレームナンバーカウンタ
 
-    window_name = 'NARUTO HandSignDetection Ninjutsu Demo'
+    window_name = 'NINJA LANTERN'
     if use_fullscreen:
         cv.namedWindow(window_name, cv.WINDOW_NORMAL)
 
