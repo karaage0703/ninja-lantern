@@ -76,10 +76,10 @@ Single process version
 $ sudo python3 ninja_lantern.py
 ```
 
-Multi process version
+Multi process version and full screen
 
 ```bash
-$ sudo python3 ninja_lantern.py
+$ sudo python3 ninja_lantern_mp.py --full_screen True
 ```
 
 ## Usage
