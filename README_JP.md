@@ -25,7 +25,7 @@ Ninja Lanternは、手の印に反応して色を変えることができるイ�
 3. このリポジトリをクローンまたはダウンロードします。
 
 ```bash
-git clone https://github.com/karaage0703/ninja-lantern.git
+cd && git clone https://github.com/karaage0703/ninja-lantern.git
 ```
 
 4. `ninja-lantern` ディレクトリに移動します。
