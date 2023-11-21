@@ -49,7 +49,7 @@ $ sudo pip3 install rpi_ws281x
 3. Clone or download this repository.
 
 ```bash
-$ git clone https://github.com/karaage0703/ninja-lantern.git
+$ cd && git clone https://github.com/karaage0703/ninja-lantern.git
 ```
 
 4. Move into the `ninja-lantern` directory.
