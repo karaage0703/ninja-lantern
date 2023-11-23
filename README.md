@@ -79,7 +79,7 @@ $ sudo python3 ninja_lantern.py
 Multi process version and full screen
 
 ```bash
-$ sudo python3 ninja_lantern_mp.py --full_screen True
+$ sudo python3 ninja_lantern_mp.py --use_fullscreen True
 ```
 
 ## Usage
