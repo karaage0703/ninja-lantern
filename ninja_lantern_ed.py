@@ -14,20 +14,15 @@ from utils import CvFpsCalc
 from utils import CvDrawText
 from model.yolox.yolox_onnx import YoloxONNX
 
-from rpi_ws281x import PixelStrip, Color
+import serial
 
 
 # LED strip configuration:
-LED_COUNT = 57        # Number of LED pixels.
-LED_PIN = 21          # GPIO pin connected to the pixels (21 uses PWM!).
-LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA = 10          # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 255  # Set to 0 for darkest and 255 for brightest
-LED_INVERT = False    # True to invert the signal (when using NPN transistor level shift)
-LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
+LED_PORT = '/dev/ttyACM2'
+LED_COUNT = 10          # Number of LED pixels.
 
 
-def display_color_pattern(strip, seal, count):
+def display_color_pattern(device, seal, count):
     """Display LED pattern"""
     seal_effects = {
         "seal1": {"colors": [(255, 0, 0), (0, 255, 0), (0, 0, 255)], "effect": "static"},
@@ -57,52 +52,57 @@ def display_color_pattern(strip, seal, count):
 
         if effect == "static":
             for i in range(LED_COUNT):
-                strip.setPixelColor(i, Color(color_pattern[i % len(color_pattern)][0],
-                                             color_pattern[i % len(color_pattern)][1],
-                                             color_pattern[i % len(color_pattern)][2]))
-            strip.show()
+                device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":{color_pattern[i % len(color_pattern)][0]},"green":{color_pattern[i % len(color_pattern)][1]},"blue":{color_pattern[i % len(color_pattern)][2]}}}\n'))
+                device.readline()
+            device.write(str.encode('{"command":"show"}\n'))
+            device.readline()
         elif effect == "slide":
             tmp_count = count % LED_COUNT
             for i in range(LED_COUNT):
                 if i == tmp_count:
-                    strip.setPixelColor(i, Color(color_pattern[0][0],
-                                                 color_pattern[0][1],
-                                                 color_pattern[0][2]))
+                    device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":{color_pattern[0][0]},"green":{color_pattern[0][1]},"blue":{color_pattern[0][2]}}}\n'))
+                    device.readline()
                 else:
-                    strip.setPixelColor(i, Color(color_pattern[1][0],
-                                                 color_pattern[1][1],
-                                                 color_pattern[1][2]))
+                    device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":{color_pattern[1][0]},"green":{color_pattern[1][1]},"blue":{color_pattern[1][2]}}}\n'))
+                    device.readline()
 
-            strip.show()
+            device.write(str.encode('{"command":"show"}\n'))
+            device.readline()
  
         elif effect == "blink":
             tmp_count = count % 4
             if tmp_count == 0 or tmp_count == 1:
                 for i in range(LED_COUNT):
-                    strip.setPixelColor(i, Color(color_pattern[i % len(color_pattern)][0],
-                                                 color_pattern[i % len(color_pattern)][1],
-                                                 color_pattern[i % len(color_pattern)][2]))
-                strip.show()
+                    device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":{color_pattern[i % len(color_pattern)][0]},"green":{color_pattern[i % len(color_pattern)][1]},"blue":{color_pattern[i % len(color_pattern)][2]}}}\n'))
+                    device.readline()
+                device.write(str.encode('{"command":"show"}\n'))
+                device.readline()
             if tmp_count == 2 or tmp_count == 3:
                 for i in range(LED_COUNT):
-                    strip.setPixelColor(i, Color(0, 0, 0))  # Set all colors to black (off)
-                strip.show()
+                    device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":0,"green":0,"blue":0}}\n'))
+                    device.readline()
+                device.write(str.encode('{"command":"show"}\n'))
+                device.readline()
         elif effect == "gradient":
             for i in range(LED_COUNT):
                 index = (i + round(time.time() * 3)) % len(color_pattern)
-                strip.setPixelColor(i, Color(color_pattern[index][0],
-                                             color_pattern[index][1],
-                                             color_pattern[index][2]))
-            strip.show()
+                device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":{color_pattern[index][0]},"green":{color_pattern[index][1]},"blue":{color_pattern[index][2]}}}\n'))
+                device.readline()
+            device.write(str.encode('{"command":"show"}\n'))
+            device.readline()
     else:
         print(f"Unknown seal: {seal}")
 
 
-def clear_color(strip):
+def clear_color(device):
     """Clear LED color"""
-    for i in range(strip.numPixels()):
-        strip.setPixelColor(i, Color(0, 0, 0))
-        strip.show()
+    device.write(str.encode('{"command":"clear"}\n'))
+    device.readline()
+    for i in range(LED_COUNT):
+        device.write(str.encode(f'{{"command":"setPixelColor","index":{i},"red":0,"green":0,"blue":0}}\n'))
+        device.readline()
+    device.write(str.encode('{"command":"show"}\n'))
+    device.readline()
 
 
 def get_args():
@@ -253,10 +253,8 @@ def main():
     jutsu_start_time = 0  # 術名表示の開始時間初期化
     frame_count = 0  # フレームナンバーカウンタ
 
-    # Create NeoPixel object with appropriate configuration.
-    strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
-    # Intialize the library (must be called once before other functions).
-    strip.begin()
+    # Initialize the serial port.
+    device = serial.Serial(LED_PORT, 9600)
     # Counter for LED pattern
     led_count = 0
 
@@ -327,7 +325,7 @@ def main():
             sign_display_queue.clear()
             sign_history_queue.clear()
         if key == 27:  # ESC：プログラム終了
-            clear_color(strip)
+            clear_color(device)
             # colorWipe(strip, Color(0, 0, 0), 10)
             break
 
@@ -360,42 +358,42 @@ def main():
        
 
         if color_pattern == 0:
-            # clear_color(strip)
-            display_color_pattern(strip, 'seal18', led_count)
+            # clear_color(device)
+            display_color_pattern(device, 'seal18', led_count)
         if color_pattern == 1:
-            display_color_pattern(strip, 'seal1', led_count)
+            display_color_pattern(device, 'seal1', led_count)
         if color_pattern == 2:
-            display_color_pattern(strip, 'seal2', led_count)
+            display_color_pattern(device, 'seal2', led_count)
         if color_pattern == 3:
-            display_color_pattern(strip, 'seal3', led_count)
+            display_color_pattern(device, 'seal3', led_count)
         if color_pattern == 4:
-            display_color_pattern(strip, 'seal4', led_count)
+            display_color_pattern(device, 'seal4', led_count)
         if color_pattern == 5:
-            display_color_pattern(strip, 'seal5', led_count)
+            display_color_pattern(device, 'seal5', led_count)
         if color_pattern == 6:
-            display_color_pattern(strip, 'seal6', led_count)
+            display_color_pattern(device, 'seal6', led_count)
         if color_pattern == 7:
-            display_color_pattern(strip, 'seal7', led_count)
+            display_color_pattern(device, 'seal7', led_count)
         if color_pattern == 8:
-            display_color_pattern(strip, 'seal8', led_count)
+            display_color_pattern(device, 'seal8', led_count)
         if color_pattern == 9:
-            display_color_pattern(strip, 'seal9', led_count)
+            display_color_pattern(device, 'seal9', led_count)
         if color_pattern == 10:
-            display_color_pattern(strip, 'seal10', led_count)
+            display_color_pattern(device, 'seal10', led_count)
         if color_pattern == 11:
-            display_color_pattern(strip, 'seal11', led_count)
+            display_color_pattern(device, 'seal11', led_count)
         if color_pattern == 12:
-            display_color_pattern(strip, 'seal12', led_count)
+            display_color_pattern(device, 'seal12', led_count)
         if color_pattern == 13:
-            display_color_pattern(strip, 'seal13', led_count)
+            display_color_pattern(device, 'seal13', led_count)
         if color_pattern == 14:
-            display_color_pattern(strip, 'seal14', led_count)
+            display_color_pattern(device, 'seal14', led_count)
         if color_pattern == 15:
-            display_color_pattern(strip, 'seal15', led_count)
+            display_color_pattern(device, 'seal15', led_count)
         if color_pattern == 16:
-            display_color_pattern(strip, 'seal16', led_count)
+            display_color_pattern(device, 'seal16', led_count)
         if color_pattern == 17:
-            display_color_pattern(strip, 'seal17', led_count)
+            display_color_pattern(device, 'seal17', led_count)
 
         # FPS調整 #############################################################
         elapsed_time = time.time() - start_time
