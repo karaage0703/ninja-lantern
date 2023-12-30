@@ -18,7 +18,7 @@ import serial
 
 
 # LED strip configuration:
-LED_PORT = '/dev/ttyACM2'
+LED_PORT = '/dev/seeedusbserial'
 LED_COUNT = 10          # Number of LED pixels.
 
 

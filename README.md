@@ -21,6 +21,10 @@ The Ninja Lantern is an interactive Turkish lamp that changes colors in response
 - RGB LED(Neopixel)
 - Appropriate wiring
 
+### Optional Hardware
+
+- Seeed USB Serial(Seeed Studio XIAO ESP32C3)
+
 ## Setup
 
 1. Gather the necessary hardware and connect it to the Raspberry Pi.
@@ -82,9 +86,40 @@ Multi process version and full screen
 $ sudo python3 ninja_lantern_mp.py --use_fullscreen True
 ```
 
+### Optional Setup
+
+If you use Seeed USB Serial(Seeed Studio XIAO ESP32C3), execute following 
+
+```sh
+$ sudo cp config/99-seeed-serial.rules /etc/udev/rules.d/
+$ sudo udevadm control --reload
+```
+
 ## Usage
 
+Run the script to start the Ninja Lantern.
+
+Single process version
+
+```bash
+$ sudo python3 ninja_lantern.py
+```
+
+Multi process version and full screen
+
+```bash
+$ sudo python3 ninja_lantern_mp.py --use_fullscreen True
+```
+
 Simply bring your hand seal in front of the camera and enjoy as the lamp changes color accordingly.
+
+### Optional Usage
+
+If you use Seeed USB Serial(Seeed Studio XIAO ESP32C3), execute following 
+
+```bash
+$ python3 ninja_lantern_ed.py --use_fullscreen True
+```
 
 ## Contributions
 
